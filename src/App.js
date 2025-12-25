@@ -43,7 +43,10 @@ function App() {
     <Router>
       <div className="App">
         <Routes>
-          {/* Alur Login */}
+          {/* 1. Redirect Root (/) ke /dashboard */}
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+
+          {/* 2. Alur Login */}
           <Route
             path="/login"
             element={
@@ -55,9 +58,10 @@ function App() {
             }
           />
 
-          {/* Alur Dashboard */}
+          {/* 3. Alur Dashboard Utama & Nested Routes */}
+          {/* Menggunakan path="/dashboard/*" mencakup /dashboard dan semua sub-menunya */}
           <Route
-            path="/dashboard"
+            path="/dashboard/*"
             element={
               isLoggedIn ? (
                 <Dashboard
@@ -71,21 +75,8 @@ function App() {
             }
           />
 
-          {/* Redirect Root ke Login atau Dashboard */}
-          <Route
-            path="/dashboard/*" // Perhatikan tanda '*' untuk nested routes
-            element={
-              isLoggedIn ? (
-                <Dashboard
-                  isDarkMode={isDarkMode}
-                  toggleDarkMode={toggleDarkMode}
-                  onLogout={handleLogout}
-                />
-              ) : (
-                <Navigate to="/login" replace />
-              )
-            }
-          />
+          {/* 4. Catch-all: Jika user mengetik path ngawur, arahkan ke dashboard */}
+          <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
       </div>
     </Router>
